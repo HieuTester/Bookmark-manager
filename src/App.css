@@ -36,3 +36,14 @@
     transform: rotate(360deg);
   }
 }
+
+
+
+.bookmark-item {
+  border-bottom: 2px solid #eee;
+  background-color: #fafafa;
+  margin: 0.75rem auto;
+  padding: 0.6rem 1rem;
+  max-width: 500px;
+  border-radius: 7px;
+}
