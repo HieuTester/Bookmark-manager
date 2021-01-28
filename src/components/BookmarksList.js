@@ -3,10 +3,11 @@ import { connect } from 'react-redux';
 import Bookmark from '../components/Bookmark';
 import { deleteBookmark } from '../actions';
 
-function BookmarksList({ bookmarks, onDelete }) {
+
+function BookmarksList({ bookmarkList, onDelete }) {
   return (
-    <div>
-      {bookmarks.map(bookmark => {
+    <div className="bookmark_list-wrapper">
+      {bookmarkList?.map(bookmark => {
         return (
           <Bookmark bookmark={bookmark} onDelete={onDelete} key={bookmark.id} />
         );

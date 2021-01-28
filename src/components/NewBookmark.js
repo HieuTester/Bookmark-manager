@@ -1,3 +1,6 @@
+import { Input } from 'antd';
+import Form from 'antd/lib/form/Form';
+import FormItem from 'antd/lib/form/FormItem';
 import React, { useState } from 'react'
 
 const NewBookmark = (props) => {
@@ -31,27 +34,32 @@ const NewBookmark = (props) => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <input
-                type="text"
-                placeholder="title"
-                name="title"
-                onChange={handleChangeTitle}
-                value={title}
-            />
-            <input
-                type="text"
-                placeholder="URL"
-                name="url"
-                onChange={handleChangeUrl}
-                value={url}
-            />
-            <hr />
-            <button type="submit">Add bookmark</button>
-            <button type="button" onClick={handleReset}>
-                Reset
+        <Form onSubmit={handleSubmit}>
+    <FormItem
+    label="ti">
+        <Input/>
+    </FormItem>
+                <input
+                    type="text"
+                    placeholder="title"
+                    name="title"
+                    onChange={handleChangeTitle}
+                    value={title}  
+                    
+                />
+                <input
+                    type="text"
+                    placeholder="URL"
+                    name="url"
+                    onChange={handleChangeUrl}
+                    value={url}
+                />
+                <hr />
+                <button type="submit">Add bookmark</button>
+                <button type="button" onClick={handleReset}>
+                    Reset
         </button>
-        </form>
+        </Form>
     )
 }
 
