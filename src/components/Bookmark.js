@@ -7,6 +7,9 @@ export default ({ bookmark: { title, url, id }, onDelete }) => {
     <div className="bookmark-item">
       <h2>{title}</h2>
       <p>URL: {url}</p>
+      <button type="button" >
+        Edit
+      </button>
       <button type="button" onClick={() => onDelete(id)}>
         Remove
       </button>

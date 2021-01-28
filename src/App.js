@@ -42,7 +42,7 @@ function App({ bookmarkList }) {
         <Header>Bookmark Manager</Header>
         <Content>
           <Search listGroup={listGroup}/>
-          <AddBookmark listGroup={listGroup}/>
+          <AddBookmark listGroups={listGroup}/>
           <BookmarksList bookmarkList={bookmarkList}/>
         </Content>
 

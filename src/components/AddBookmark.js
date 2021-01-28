@@ -20,20 +20,21 @@ const layout = {
 const AddBookmark = (props) => {
     const [form] = Form.useForm();
     const [isOpenModal, setIsOpenModal] = useState(false)
-    const [listGroup, setListGroup] = useState([])
     const[newGroup, setNewGroup] = useState('')
     const [group, setGroup] = useState('')
+    const [listGroup, setListGroup] = useState([])
     const [bookmark, setBookmark] = useState({})
-
+    
     const {
         addNewBookmark,
         // bookmark,
-        editBookmark,   
+        editBookmark,
+        listGroups  
     } = props
-    // useEffect(() => {
-    //     // setBookmark(props.bookmark)
-    //     setListGroup(props.listGroup)
-    // }, [])
+    useEffect(() => {
+        // setBookmark(props.bookmark)
+        setListGroup(listGroups)
+    }, [listGroups])
 
     // useEffect(() => {
     //     if (props.bookmark.id) {
@@ -181,7 +182,7 @@ const AddBookmark = (props) => {
                                 </div>
                                 )}
                         >
-                            {listGroup.map((item) => (
+                            {listGroup?.map((item) => (
                                 <Option key={item.id} value={item.id} >{item.title}</Option>
                             ))}
                         </Select>
