@@ -7,6 +7,7 @@ import Search from './components/Search'
 import { Layout } from 'antd';
 import 'antd/dist/antd.css';
 import { connect } from 'react-redux';
+import { addBookmark } from './actions/index'
 
 const { Header, Footer, Content } = Layout;
 

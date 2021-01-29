@@ -16,11 +16,11 @@ function BookmarksList({ bookmarkList, onDelete }) {
   );
 }
 
-const mapStateToProps = state => {
-  return {
-    bookmarks: state
-  };
-};
+// const mapStateToProps = state => {
+//   return {
+//     bookmarks: state
+//   };
+// };
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -31,6 +31,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
 )(BookmarksList);

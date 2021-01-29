@@ -16,20 +16,20 @@ const layout = {
 
 
 
-    
+
 const AddBookmark = (props) => {
     const [form] = Form.useForm();
     const [isOpenModal, setIsOpenModal] = useState(false)
-    const[newGroup, setNewGroup] = useState('')
-    const [group, setGroup] = useState('')
+    const [newGroup, setNewGroup] = useState('')
+    // const [group, setGroup] = useState('')
     const [listGroup, setListGroup] = useState([])
     const [bookmark, setBookmark] = useState({})
-    
+
     const {
-        addNewBookmark,
         // bookmark,
         editBookmark,
-        listGroups  
+        listGroups,
+        onAddBookmark
     } = props
     useEffect(() => {
         // setBookmark(props.bookmark)
@@ -80,9 +80,8 @@ const AddBookmark = (props) => {
 
     function handleAddGroup() {
         try {
-            if(listGroup.filter(item => item.title === newGroup).length ===0)
-            {
-                if(newGroup.length > 0) {
+            if (listGroup.filter(item => item.title === newGroup).length === 0) {
+                if (newGroup.length > 0) {
                     const newItem = {
                         id: genNewId(),
                         title: newGroup
@@ -90,17 +89,18 @@ const AddBookmark = (props) => {
                     const newListGroup = [...listGroup]
                     newListGroup.push(newItem)
                     setListGroup(newListGroup)
-                    }
-            }else {
-                message.error("Category already exist!")
+                }
+            } else {
+                message.error("Group already exist!")
             }
-        } catch(e) {
-            message.error(e)
+        } catch (e) {
+            message.error(e.message)
         }
     }
 
     const onFinish = values => {
         const group = getGroupById(values.groupId)
+        console.log(group)
         const newBookmark = {
             title: values.title,
             group: group,
@@ -114,8 +114,9 @@ const AddBookmark = (props) => {
         } else {
             newBookmark["id"] = genNewId()
             // newNote["date"] = moment().format('DD/MM/YYYY')
-            addNewBookmark(newBookmark);
+            onAddBookmark(newBookmark);
         }
+        console.log(newBookmark)
         closeModal();
         clearFormValues();
     };
@@ -126,10 +127,10 @@ const AddBookmark = (props) => {
 
 
 
-  return (
-    <div className='add-button'>
-      <Button onClick={openModal} type="primary" shape="round" icon={<FolderAddOutlined />}  size="middle" />
-      <Modal
+    return (
+        <div className='add-button'>
+            <Button onClick={openModal} type="primary" shape="round" icon={<FolderAddOutlined />} size="middle" />
+            <Modal
                 title={!bookmark.id ? "Add A Bookmark" : "Edit Bookmark"}
                 visible={isOpenModal}
                 onOk={handleOk}
@@ -162,25 +163,25 @@ const AddBookmark = (props) => {
                         // value={note.category.id}
                         rules={[{ required: true, message: 'Please select group!' }]}
                     >
-                        <Select 
-                            style={{ width: "50%" }} 
+                        <Select
+                            style={{ width: "50%" }}
                             placeholder="Select group"
                             dropdownRender={menu => (
                                 <div>
                                     {menu}
                                     <Divider style={{ margin: '4px 0' }} />
-                                    <div style={{ display: 'flex', flexWrap: 'nowrap', padding:'0 8px', height: '30px' }}>
-                                    <Input style={{ flex: 'auto' }} onChange={(e) => setGroup(e.target.value)} />
+                                    <div style={{ display: 'flex', flexWrap: 'nowrap', padding: '0 8px', height: '30px' }}>
+                                        <Input style={{ flex: 'auto' }} onChange={(e) => setNewGroup(e.target.value)} />
                                         <a
                                             style={{ flex: 'none', paddingLeft: '8px', display: 'block', cursor: 'pointer' }}
-                                            // onClick={this.addItem}
+                                        // onClick={this.addItem}
                                         >
-                                            <Button  icon={<FileAddOutlined />} onClick={handleAddGroup}>
+                                            <Button icon={<FileAddOutlined />} onClick={handleAddGroup}>
                                             </Button>
                                         </a>
                                     </div>
                                 </div>
-                                )}
+                            )}
                         >
                             {listGroup?.map((item) => (
                                 <Option key={item.id} value={item.id} >{item.title}</Option>
@@ -195,29 +196,24 @@ const AddBookmark = (props) => {
                         // initialValues={note.content}
                         rules={[{ required: true, message: 'Please input url!' }]}
                     >
-                        
-                        <Input.TextArea rows={4}/>
+
+                        <Input.TextArea rows={4} />
                     </Form.Item>
 
 
                 </Form>
             </Modal>
-    </div>
-  )
+        </div>
+    )
 }
-
-export default AddBookmark
 
 
 const mapDispatchToProps = dispatch => {
-  return {
-    onAddBookmark: bookmark => {
-      dispatch(addBookmark(bookmark));
-    }
-  };
+    return {
+        onAddBookmark: (bookmark) => {
+            dispatch(addBookmark(bookmark));
+        }
+    };
 };
 
-// export default connect(
-//   null,
-//   mapDispatchToProps
-// )(NewBookmark);
+export default connect(null,mapDispatchToProps)(AddBookmark);
