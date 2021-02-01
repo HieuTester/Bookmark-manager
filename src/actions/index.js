@@ -1,9 +1,18 @@
 import { ADD_BOOKMARK, DELETE_BOOKMARK, SET_BOOKMARK_LIST} from './types';
 
 
-const genNewId = () => Math.random().toString(36).substr(2, 23)
 
 export const addBookmark = ({ id, title, url, group }) => ({
+  type: ADD_BOOKMARK,
+  payload: {
+    id,
+    title,
+    url, 
+    group
+  }
+});
+
+export const editBookmark = ({ id, title, url, group }) => ({
   type: ADD_BOOKMARK,
   payload: {
     id,
