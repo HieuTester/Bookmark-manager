@@ -2,7 +2,7 @@ import React from 'react';
 import '../App.css'
 
 
-export default ({ bookmark: { title, url, id }, onDelete }) => {
+export default ({ bookmark: { title, url, _id }, onDelete }) => {
   return (
     <div className="bookmark-item">
       <h2>{title}</h2>
@@ -10,7 +10,7 @@ export default ({ bookmark: { title, url, id }, onDelete }) => {
       <button type="button" >
         Edit
       </button>
-      <button type="button" onClick={() => onDelete(id)}>
+      <button type="button" onClick={() => onDelete(_id)}>
         Remove
       </button>
     </div>

@@ -4,12 +4,12 @@ import Bookmark from '../components/Bookmark';
 import { deleteBookmark } from '../actions';
 
 
-function BookmarksList({ bookmarkList, onDelete }) {
+function BookmarksList({ bookmarks, deleteBookmark  }) {
   return (
     <div className="bookmark_list-wrapper">
-      {bookmarkList?.map(bookmark => {
+      {bookmarks?.map(bookmark => {
         return (
-          <Bookmark bookmark={bookmark} onDelete={onDelete} key={bookmark.id} />
+          <Bookmark bookmark={bookmark} onDelete={deleteBookmark} key={bookmark._id} />
         );
       })}
     </div>
@@ -21,16 +21,16 @@ function BookmarksList({ bookmarkList, onDelete }) {
 //     bookmarks: state
 //   };
 // };
+export default BookmarksList
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     onDelete: _id => {
+//       dispatch(deleteBookmark(_id));
+//     }
+//   };
+// };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    onDelete: id => {
-      dispatch(deleteBookmark(id));
-    }
-  };
-};
-
-export default connect(
-  null,
-  mapDispatchToProps
-)(BookmarksList);
+// export default connect(
+//   null,
+//   mapDispatchToProps
+// )(BookmarksList);

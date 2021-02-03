@@ -1,39 +1,33 @@
-import { ADD_BOOKMARK, DELETE_BOOKMARK, SET_BOOKMARK_LIST } from '../actions/types';
+import { ADD_BOOKMARK, DELETE_BOOKMARK, EDIT_BOOKMARK, SET_BOOKMARKS } from '../actions/types';
 
 
 
-const initialBookmarkState = {
-  bookmarkList : [
-    {title: "redux", id: 1, url: "xdmedia.info", group: {id: 1, title: "React"}},
-    {title: "reactjs", id: 2, url: "google.com", group: {id: 2, title: "Lập trình"}},
-  ],
-  activeGroup: ''
-};
 
 
 
-export default function bookmarksReducer(state = initialBookmarkState, action) {
+export default function bookmarksReducer(state = [], action) {
   switch (action.type) {
-    case ADD_BOOKMARK:
-      const newBookmarkList = [...state.bookmarkList];
-      newBookmarkList.push(action.payload)
+    case SET_BOOKMARKS:
       return {
         ...state,
-        bookmarkList: [...newBookmarkList]
-      };
-    case DELETE_BOOKMARK:
-      const {bookmarkList} = state;
-      const newBookmarks =  bookmarkList.filter(bookmark => bookmark.id !== action.payload.id);
-      return {
-        ...state,
-        bookmarkList: [...newBookmarks]
+        bookmarks: action.bookmarks.reverse()
       }
-    case SET_BOOKMARK_LIST:
-      return {
-        ...state,
-        bookmarkList: action.payload.bookmarkList
-      }  
+    case ADD_BOOKMARK:
+      return [action.bookmark, ...state];
+    case EDIT_BOOKMARK:
+      return state.map((bookmark) => {
+        if (bookmark._id === action._id) {
+          return {
+            ...bookmark,
+            ...action.bookmark
+          };
+        } else {
+          return bookmark;
+        }
+      });
+    case DELETE_BOOKMARK:
+      return state.filter((bookmark) => bookmark._id !== action._id);
     default:
       return state;
   }
-}
+};

@@ -1,39 +1,88 @@
-import { ADD_BOOKMARK, DELETE_BOOKMARK, SET_BOOKMARK_LIST} from './types';
+import { ADD_BOOKMARK, EDIT_BOOKMARK, DELETE_BOOKMARK, SET_BOOKMARKS} from './types';
+import axios from 'axios';
+// import { getErrors } from './errors';
 
-
-
-export const addBookmark = ({ id, title, url, group }) => ({
-  type: ADD_BOOKMARK,
-  payload: {
-    id,
-    title,
-    url, 
-    group
-  }
+export const setBookmarks = (bookmarks) => ({
+  type: SET_BOOKMARKS,
+  bookmarks
 });
 
-export const editBookmark = ({ id, title, url, group }) => ({
+export const addBookmark = (bookmark) => ({
   type: ADD_BOOKMARK,
-  payload: {
-    id,
-    title,
-    url, 
-    group
-  }
+  bookmark
 });
 
-export const deleteBookmark = id => ({
+export const editBookmark = (bookmark) => ({
+  type: EDIT_BOOKMARK,
+  _id: bookmark._id,
+  bookmark
+});
+
+export const deleteBookmark = (_id) => ({
   type: DELETE_BOOKMARK,
-  payload: {
-    id
-  }
+  _id
 });
 
-export const setBookmarkList = bookmarkList => {
-  return {
-      type: SET_BOOKMARK_LIST,
-      payload: {
-          bookmarkList
-      }
-  }
-}
+export const initiateGetBookmarks = () => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios({
+        url: '/api/getBookmark',
+        method: 'POST'
+      })
+      console.log(data)
+      return dispatch(setBookmarks(data));
+    } catch (error) {
+      console.log(error.message)
+      // error.response && dispatch(getErrors(error.response.data));
+    }
+  };
+};
+
+export const initiateAddBookmark = (bookmark) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios({
+        url: '/api/addBookmark',
+        method: 'POST',
+        data: bookmark
+      });
+      return dispatch(addBookmark(data));
+    } catch (error) {
+      console.log(error.message)
+      // error.response && dispatch(getErrors(error.response.data));
+    }
+  };
+};
+
+export const initiateEditBookmark = (bookmark) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios({
+        url: '/api/editBookmark',
+        method: 'PUT',
+        data: bookmark
+      });
+      return dispatch(editBookmark(data));
+    } catch (error) {
+      console.log(error.message)
+      // error.response && dispatch(getErrors(error.response.data));
+    }
+  };
+};
+
+export const initiateDeleteBookmark = (_id) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios({
+        url: '/api/deleteBookmark',
+        method: 'DELETE',
+        data: { _id }
+      });
+      return dispatch(deleteBookmark(data._id));
+    } catch (error) {
+      console.log(error.message)
+      // error.response && dispatch(getErrors(error.response.data));
+    }
+  };
+};

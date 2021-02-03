@@ -1,50 +1,90 @@
-  
+
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import AddBookmark from './components/AddBookmark'
 import BookmarksList from './components/BookmarksList'
 import Search from './components/Search'
-import { Layout } from 'antd';
+import { Layout, message } from 'antd';
 import 'antd/dist/antd.css';
 import { connect } from 'react-redux';
-import { addBookmark } from './actions/index'
+import { initiateAddBookmark, initiateEditBookmark, initiateGetBookmarks, initiateDeleteBookmark } from './actions/index'
 
 const { Header, Footer, Content } = Layout;
 
 
-function App({ bookmarkList }) {
-
-  const [listGroup, setListgroup] = useState([])
+function App({ bookmarksList, dispatch }) {
+  const [listTag, setListTag] = useState([])
 
   useEffect(() => {
-    setListgroup(getListGroup(bookmarkList))
+    getBookmarks()
   }, [])
 
+  useEffect(() => {
+    // setBookmarks(bookmarksList);
+    setListTag(getListTag(bookmarksList));
+  }, [bookmarksList]);
 
-  function getListGroup(bookmarkList) {
+  const getBookmarks = () => {
+    dispatch(initiateGetBookmarks())
+      .then(() => {
+        
+      })
+      .catch((err) => message.error(err.message));
+  };
+
+
+
+
+  const addBookmark = (bookmark) => {
+    dispatch(initiateAddBookmark(bookmark)).then(() => {
+      getBookmarks();
+      message.success("Bookmark added successfully!")
+
+    })
+      .catch((err) => message.error(err.message));
+  };
+
+  const editBookmark = (bookmark) => {
+    dispatch(initiateEditBookmark(bookmark)).then(() => {
+      getBookmarks();
+      message.success("Bookmark added successfully!")
+    })
+    .catch((err) => message.error(err.message));
+  };
+
+  const deleteBookmark = (id) => {
+    dispatch(initiateDeleteBookmark(id)).then(() => {
+      getBookmarks();
+      message.success("Bookmark deleleted successfully!")
+    })
+    .catch((err) => message.error(err.message));
+  };
+
+
+
+  function getListTag(bookmarkList) {
     if (bookmarkList) {
-      const listGroup = bookmarkList.map((bookmark) => {
-        return bookmark.group;
+      const listTag = bookmarkList.map((bookmark) => {
+        return bookmark.tag;
       });
-      const listTextGroup = listGroup.map((group) => {
-        return JSON.stringify(group);
+      const listTextTag = listTag.map((tag) => {
+        return JSON.stringify(tag);
       });
-      const uniGroup = [...new Set(listTextGroup)];
-      const groups = uniGroup.map((group) => {
-        return JSON.parse(group);
+      const uniTag = [...new Set(listTextTag)];
+      const tags = uniTag.map((tag) => {
+        return JSON.parse(tag);
       });
-      return groups;
+      return tags;
     }
   }
-
   return (
     <>
       <Layout>
         <Header>Bookmark Manager</Header>
         <Content>
-          <Search listGroup={listGroup}/>
-          <AddBookmark listGroups={listGroup}/>
-          <BookmarksList bookmarkList={bookmarkList}/>
+          <Search listTag={listTag} />
+          <AddBookmark listTags={listTag} addBookmark={addBookmark} editBookmark={editBookmark} />
+          <BookmarksList bookmarks={bookmarksList} deleteBookmark={deleteBookmark} />
         </Content>
 
         <Footer> HieuTt01 © 2 0 2 1</Footer>
@@ -54,9 +94,9 @@ function App({ bookmarkList }) {
 }
 
 
-const mapStateToProps = state => ({
-  bookmarkList: state.bookmarkList
-})
-
+const mapStateToProps = state => {
+  return (
+    { bookmarksList: state.bookmarks }
+  )};
 
 export default connect(mapStateToProps)(App);

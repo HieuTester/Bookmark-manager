@@ -20,21 +20,20 @@ const layout = {
 const AddBookmark = (props) => {
     const [form] = Form.useForm();
     const [isOpenModal, setIsOpenModal] = useState(false)
-    const [newGroup, setNewGroup] = useState('')
-    // const [group, setGroup] = useState('')
-    const [listGroup, setListGroup] = useState([])
+    const [newTag, setNewTag] = useState('')
+    const [listTag, setListTag] = useState([])
     const [bookmark, setBookmark] = useState({})
 
     const {
         // bookmark,
         editBookmark,
-        listGroups,
-        onAddBookmark
+        listTags, 
+        addBookmark
     } = props
     useEffect(() => {
         // setBookmark(props.bookmark)
-        setListGroup(listGroups)
-    }, [listGroups])
+        setListTag(listTags)
+    }, [listTags])
 
     // useEffect(() => {
     //     if (props.bookmark.id) {
@@ -71,27 +70,23 @@ const AddBookmark = (props) => {
     }
 
 
-    const getGroupById = groupId => {
-        const index = listGroup.findIndex(x => x.id === groupId)
-        return listGroup[index]
-    }
+    // const getGroupById = groupId => {
+    //     const index = listGroup.findIndex(x => x.id === groupId)
+    //     return listGroup[index]
+    // }
 
-    const genNewId = () => Math.random().toString(36).substr(2, 23)
+    // const genNewId = () => Math.random().toString(36).substr(2, 23)
 
-    function handleAddGroup() {
+    function handleAddTag() {
         try {
-            if (listGroup.filter(item => item.title === newGroup).length === 0) {
-                if (newGroup.length > 0) {
-                    const newItem = {
-                        id: genNewId(),
-                        title: newGroup
-                    }
-                    const newListGroup = [...listGroup]
-                    newListGroup.push(newItem)
-                    setListGroup(newListGroup)
+            if (listTag.filter(item => item === newTag).length === 0) {
+                if (newTag.length > 0) {
+                    const newListTag = [...listTag]
+                    newListTag.push(newTag)
+                    setListTag(newListTag)
                 }
             } else {
-                message.error("Group already exist!")
+                message.error("Tag already exist!")
             }
         } catch (e) {
             message.error(e.message)
@@ -99,11 +94,9 @@ const AddBookmark = (props) => {
     }
 
     const onFinish = values => {
-        const group = getGroupById(values.groupId)
-        console.log(group)
         const newBookmark = {
             title: values.title,
-            group: group,
+            tag: values.tag,
             url: values.url,
         }
         if (bookmark.id) {
@@ -112,9 +105,9 @@ const AddBookmark = (props) => {
             // newNote["modifyDate"] = moment().format('DD/MM/YYYY')
             editBookmark(newBookmark)
         } else {
-            newBookmark["id"] = genNewId()
-            // newNote["date"] = moment().format('DD/MM/YYYY')
-            onAddBookmark(newBookmark);
+            // newBookmark["id"] = genNewId()
+            // // newNote["date"] = moment().format('DD/MM/YYYY')
+            addBookmark(newBookmark);
         }
         console.log(newBookmark)
         closeModal();
@@ -158,33 +151,33 @@ const AddBookmark = (props) => {
                         <Input />
                     </Form.Item>
                     <Form.Item
-                        label="Group"
-                        name="groupId"
+                        label="Tag"
+                        name="tag"
                         // value={note.category.id}
-                        rules={[{ required: true, message: 'Please select group!' }]}
+                        rules={[{ required: true, message: 'Please select tag!' }]}
                     >
                         <Select
                             style={{ width: "50%" }}
-                            placeholder="Select group"
+                            placeholder="Select tag"
                             dropdownRender={menu => (
                                 <div>
                                     {menu}
                                     <Divider style={{ margin: '4px 0' }} />
                                     <div style={{ display: 'flex', flexWrap: 'nowrap', padding: '0 8px', height: '30px' }}>
-                                        <Input style={{ flex: 'auto' }} onChange={(e) => setNewGroup(e.target.value)} />
+                                        <Input style={{ flex: 'auto' }} onChange={(e) => setNewTag(e.target.value)} />
                                         <a
                                             style={{ flex: 'none', paddingLeft: '8px', display: 'block', cursor: 'pointer' }}
                                         // onClick={this.addItem}
                                         >
-                                            <Button icon={<FileAddOutlined />} onClick={handleAddGroup}>
+                                            <Button icon={<FileAddOutlined />} onClick={handleAddTag}>
                                             </Button>
                                         </a>
                                     </div>
                                 </div>
                             )}
                         >
-                            {listGroup?.map((item) => (
-                                <Option key={item.id} value={item.id} >{item.title}</Option>
+                            {listTag?.map((item, index) => (
+                                <Option key={index} value={item} >{item}</Option>
                             ))}
                         </Select>
                     </Form.Item>
@@ -208,12 +201,13 @@ const AddBookmark = (props) => {
 }
 
 
-const mapDispatchToProps = dispatch => {
-    return {
-        onAddBookmark: (bookmark) => {
-            dispatch(addBookmark(bookmark));
-        }
-    };
-};
+// const mapDispatchToProps = dispatch => {
+//     return {
+//         onAddBookmark: (bookmark) => {
+//             dispatch(addBookmark(bookmark));
+//         }
+//     };
+// };
 
-export default connect(null,mapDispatchToProps)(AddBookmark);
+// export default connect(null,mapDispatchToProps)(AddBookmark);
+export default AddBookmark;
